@@ -1,0 +1,40 @@
+#formato_Principal{
+    margin: 10px ;
+    display: table;
+}
+h1 {text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    text-shadow: 3px 3px 2px black;
+    padding-top: 0px;
+    font-size: 50px;
+    color: rgb(95, 95, 95);
+}
+    alineación de texto : centro;
+}
+table{
+	background-color: white;
+	text-align: left;
+	border-collapse: collapse;
+	width: 100%;
+}
+th, td{
+	padding: 25px;
+}
+thead{
+	background-color: hsl(162, 46%, 38%);
+	border-bottom: solid 5px hsl(108, 78%, 35%);
+	color: white;
+}
+tr:nth-child(even){
+	background-color: #ddd;
+}
+tr:hover td{
+	background-color: #369681;
+	color: white;
+}
+h5 {text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    text-shadow: 3px 3px 2px rgba(0, 0, 0, 0.719);
+    padding-top: 0px;
+    font-size: 30px;
+    color: rgb(95, 95, 95);
