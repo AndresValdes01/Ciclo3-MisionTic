@@ -22,7 +22,7 @@ function registrarUsuario(req, res){
     console.log('POST /api/usuario');
     console.log(req.body);
 
-    //Primero buscamos el usuario en la abse de datos
+    //Primero buscamos el usuario en la base de datos
     Usuario.findOne({codigo: req.body.codigo}, (err, usuarioEnBaseDeDatos)=>{
         if(!usuarioEnBaseDeDatos){
             //Si no se encuentra el usuario, se guarda
@@ -59,9 +59,19 @@ function registrarUsuario(req, res){
     });
 
 }
+function eliminarUsuario(req, res){
+    console.log("el usuario ha sido eliminado")
+}
+function actualizarUsuario(req, res){
+    Usuario.find({}, (error, usuarios)=>{})
+    console.log("el usuario ha sido actualizado")
+}
 
 
 module.exports = {
     getUsuarios,
-    registrarUsuario
+    registrarUsuario,
+    eliminarUsuario,
+    actualizarUsuario
+
 }

@@ -8,6 +8,9 @@ const ProductosCtrl = require('../controllers/producto.controller');
 
 api.get('/usuarios', UsuarioCtrl.getUsuarios);
 api.post('/usuarios', UsuarioCtrl.registrarUsuario);
+/* api.delete('/usuarios', UsuarioCtrl.eliminarUsuario); */
+api.put('/usuarios', UsuarioCtrl.actualizarUsuario);
+
 
 api.get('/gestionventas', VentasCtrl.getVentas);
 api.post('/gestionventas', VentasCtrl.registrarVenta);

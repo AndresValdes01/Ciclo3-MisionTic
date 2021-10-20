@@ -2,6 +2,8 @@ import React from 'react';
 import logo from './logo.jpeg'
 import './usuariosStyles.css'
 import axios from 'axios';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faTrash, faPencilAlt} from '@fortawesome/free-solid-svg-icons'
 
   class UsuariosPage extends React.Component{
     state = {
@@ -16,8 +18,8 @@ import axios from 'axios';
       })
     }
     registrarUsuario(event){
-        event.preventDefault();
-    
+
+
         //consumir post con axios
         axios.post('http://localhost:3001/api/usuarios',{
           codigo: event.target.codigo.value,  
@@ -32,6 +34,15 @@ import axios from 'axios';
     
         
       }
+
+      actualizarUsuario(){
+        axios.put('http://localhost:3001/api/usuarios', {
+          pare
+        })
+      }
+      eliminarUsuario(){
+        axios.delete('http://localhost:3001/api/usuarios')
+      }
     
       render(){
         return (
@@ -41,7 +52,7 @@ import axios from 'axios';
         <img src={logo} className= "imagen"/>
         <h1 className ="h1-users">Crear usuario</h1>
         <form  onSubmit={this.registrarUsuario} className = "fusers">
-            <input className="registro" type="text" placeholder="ID" name = "codigo"/>
+            <input className="registro" type="text" placeholder="ID" name = "codigo" value ={this.state.usuarios.length+1}/>
             <input className="registro" type="text" placeholder="Nombre" name = "nombre"/>
             <input className="registro" type="email" placeholder="email" name="email"/><br/>
             <select name="rol" className="selectorRol" name="rol">
@@ -80,7 +91,9 @@ import axios from 'axios';
                       <td className="td-users">{usuario.email}</td>
                       <td className="td-users">{usuario.rol}</td>
                       <td className="td-users">{usuario.estado}</td>
-                      <td className ="td-users"><button> Eliminar</button><button>Actualizar</button></td>
+                      <td className ="td-users"> 
+                      <button onClick ={this.actualizarUsuario} className ="botn" title ="eliminar" value ="eliminar" ><FontAwesomeIcon className ="btn-delete" icon={faTrash}/>
+                      </button> <button onClick ={this.eliminarUsuario} title ="actualizar" value ="actualizar" ><FontAwesomeIcon className ="btn-update" icon={faPencilAlt}/></button></td>
                 </tr>
                     
                   )}
