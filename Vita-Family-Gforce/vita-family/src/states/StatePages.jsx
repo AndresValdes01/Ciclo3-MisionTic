@@ -8,13 +8,13 @@ function StatePages() {
   };
   return (
     <div className="Bestate">
-      <img src={logo} className="imagen" />
+      <img src={ logo } className="imagen" alt="VitaFamily"/>
       <h1 className="h1-state">Estado de ventas</h1>;
-      <p className="pstate">
+      <div className="pstate">
         <form className="fstate">
           <input type="search" id="Bucador" placeholder="Buscar"></input>
         </form>
-      </p>
+      </div>
       <form className="fstate">
         <button type="submit" onClick={() => Mensaje()}>
           {" "}
@@ -75,10 +75,10 @@ function StatePages() {
                   <option>Entregado</option>
                 </select>
               </td>
-			  <td className="td-state">
-              <button> Editar</button>
-              <button>Eliminar</button>
-            </td>
+	      <td className="td-state">
+                <button> Editar</button>
+                <button>Eliminar</button>
+              </td>
             </tr>
             
             <tr className="row-state">
