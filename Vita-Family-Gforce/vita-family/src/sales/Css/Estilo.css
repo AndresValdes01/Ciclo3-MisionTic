@@ -1,6 +1,6 @@
 .cuerpo {
     background-color: rgb(231, 231, 231);
-}
+} 
 #padNav {
     padding-left: 30px;
 }
@@ -85,7 +85,7 @@ legend {
     width: 130px;
 }
 #labelSearch {
-    width: 120px;
+    width: 150px;
 }
 #hrmain {
     margin: auto;
@@ -192,3 +192,24 @@ legend {
 .trList:nth-child(odd) { /* Renglones impares */
     background-color: #d3fac7;
 }
+#btnListarDelete {
+    width: 50%;
+    margin: auto;
+}
+.swal2-styled.swal2-confirm {
+    background-color: #0e6251;
+}
+#tableModalList {
+    width: 100%;    
+}
+.labelUpdate {
+    background-color: white;
+    text-align: start;
+    margin-left: 10px;
+    width: 150px;
+}
+.modal-header {
+    background-color: #1c8f4e;
+    color: white;    
+}
+
