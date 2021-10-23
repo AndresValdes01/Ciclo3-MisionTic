@@ -13,9 +13,10 @@ api.put('/usuarios', UsuarioCtrl.actualizarUsuario);
 
 
 api.get('/gestionventas', VentasCtrl.getVentas);
+api.get('/gestionventas/:id', VentasCtrl.getOnlySale);
 api.post('/gestionventas', VentasCtrl.registrarVenta);
 api.put('/gestionventas', VentasCtrl.updateVenta);
-api.delete('/gestionventas', VentasCtrl.deleteVenta);
+api.delete('/gestionventas/:id', VentasCtrl.deleteVenta);
 
 api.get('/productos', ProductosCtrl.getProducto);
 api.post('/productos', ProductosCtrl.registrarProducto);
