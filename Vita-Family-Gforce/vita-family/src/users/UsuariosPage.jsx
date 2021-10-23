@@ -34,8 +34,16 @@ import {faTrash, faPencilAlt} from '@fortawesome/free-solid-svg-icons'
     
         
       }
-
+/* 
+      actualizarUsuario(){
+        axios.put('http://localhost:3001/api/usuarios', {
           
+        })
+      }
+      eliminarUsuario(){
+        axios.delete('http://localhost:3001/api/usuarios')
+      }
+     */
       render(){
         return (
           <div className="App">           
