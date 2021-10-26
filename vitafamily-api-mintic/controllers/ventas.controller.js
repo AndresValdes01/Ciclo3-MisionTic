@@ -28,8 +28,8 @@ VentaCtrl.getVentas = async (req, res) => {
 }
 
 VentaCtrl.getOnlySale = async (req, res) => {
-    try {
-        const query = { "ID_Venta": req.params.id };
+    try {        
+        const query = { "ID_Venta" : req.params.id };               
         Ventas.findOne(query, (err, venta) => {
             if (venta) {    
                 // Si hay registros en la DB            
@@ -50,6 +50,44 @@ VentaCtrl.getOnlySale = async (req, res) => {
     } catch (error) {
         res.status(500).send({
             message: `Error de conexion a la DB ${ err }, No se pudo Buscar Venta ${ error }`
+        });
+    }
+}
+
+VentaCtrl.getManySales = async (req, res) => {
+    try {   
+        let query = {};            
+        if (req.params.key == "Fecha_Venta") {
+            query = { "Fecha_Venta" : req.params.value };
+        } else {
+            if (req.params.key == "ID_Cliente") {
+                query = { "ID_Cliente" : req.params.value };
+            } else {
+                if(req.params.key == "ID_Vendedor"){
+                    query = { "ID_Vendedor" : req.params.value };
+                }                
+            }
+        }
+        Ventas.find(query, (err, ventas) => {            
+            if (ventas) {    
+                // Si hay registros en la DB            
+                res.status(200).send({ 
+                    ventas, 
+                    message: `Metodo Get ralizado Correctamente`,
+                    msg: 0
+                });                
+            } else {
+                if (res.statusCode == 200) {
+                    res.send({
+                        message: `No hay ventas registradas con ese parametro ${query}`, 
+                        msg: 1
+                    });
+                }                  
+            }     
+        })
+    } catch (error) {
+        res.status(500).send({
+            message: `Error al realiza la consulta de las ventas registradas: ${error}`
         });
     }
 }

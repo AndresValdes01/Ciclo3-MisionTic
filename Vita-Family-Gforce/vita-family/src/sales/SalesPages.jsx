@@ -7,7 +7,7 @@ import "./Css/Estilo.css";
 
 function SalesPages() {    
 
-  const [state, setState] = useState([]); 
+  const [state, setState] = useState([]);  
   const [ID_Venta, setID_Venta] = useState(0);        
   const [Cantidad, setCantidad] = useState(0);             
   const [ID_Cliente, setID_Cliente] = useState(0);   
@@ -18,21 +18,59 @@ function SalesPages() {
   const [Nom_Cliente, setNom_Cliente] = useState(''); 
   const [Nom_Vendedor, setNom_Vendedor] = useState('');  
   const [Estado_Venta, setEstado_Venta] = useState(''); 
+  const [flagFindOne, setFlagFindOne] = useState(false);
+  const [flagFindMany, setFlagFindMany] = useState(false);
   const [Precio_Unitario, setPrecio_Unitario] = useState(0);     
 
   const mostrarVentas = async() => {    
     await axios.get('http://localhost:3001/api/gestionventas')
       .then(res => {
         const ventas = res.data.ventas;
-        setState( ventas );
+        setState( ventas );        
         if (ventas.length == 0) {
           Swal.fire({ icon: 'error', title: 'Oops...', text: 'No hay Registros en la Base de Datos Disponibles' });
         } else {
           res.data.msg ? Swal.fire({ icon: 'error', title: 'Oops...', text: res.data.message }) : 
-          console.log(res.data.message);
+          console.log(res.data.message); setFlagFindOne(false); setFlagFindMany(true);
         }        
       });      
-  }     
+  } 
+  
+  const findByFecha = async() => {
+    const res = await axios.get('http://localhost:3001/api/gestionventas/Fecha_Venta/' + Fecha_Venta);
+    const ventas = res.data.ventas;
+    setState(ventas);
+    if (ventas.length == 0) {
+      Swal.fire({ icon: 'error', title: 'Oops...', text: `No hay Registros con fecha ${Fecha_Venta} en la Base de Datos Disponibles` });
+    } else {
+      res.data.msg ? Swal.fire({ icon: 'error', title: 'Oops...', text: res.data.message }) : 
+      setFlagFindMany(true); setFlagFindOne(false);
+    } 
+  }
+
+  const findByIdCliente = async () => {
+    const res = await axios.get('http://localhost:3001/api/gestionventas/ID_Cliente/' + ID_Cliente);
+    const ventas = res.data.ventas;
+    setState(ventas);
+    if (ventas.length == 0) {
+      Swal.fire({ icon: 'error', title: 'Oops...', text: `No hay Registros con el ID ${ID_Cliente} en la Base de Datos Disponibles` });
+    } else {
+      res.data.msg ? Swal.fire({ icon: 'error', title: 'Oops...', text: res.data.message }) : 
+      setFlagFindMany(true); setFlagFindOne(false);
+    }      
+  }
+
+  const findByIdVend = async() => {
+    const res = await axios.get('http://localhost:3001/api/gestionventas/ID_Vendedor/' + ID_Vendedor);
+    const ventas = res.data.ventas;
+    setState(ventas);
+    if (ventas.length == 0) {
+      Swal.fire({ icon: 'error', title: 'Oops...', text: `No hay Registros con ID ${ID_Vendedor} en la Base de Datos Disponibles` });
+    } else {
+      res.data.msg ? Swal.fire({ icon: 'error', title: 'Oops...', text: res.data.message }) : 
+      setFlagFindMany(true); setFlagFindOne(false);
+    }    
+  }
   
   const findSale = async() => {        
     const res = await axios.get('http://localhost:3001/api/gestionventas/' + ID_Venta);  
@@ -45,14 +83,15 @@ function SalesPages() {
       setValor_Total( venta.Valor_Total ); setFecha_Venta( venta.Fecha_Venta );
       setID_Cliente( venta.ID_Cliente ); setNom_Cliente( venta.Nom_Cliente );
       setNom_Vendedor( venta.Nom_Vendedor ); setID_Vendedor( venta.ID_Vendedor );
-      setEstado_Venta( venta.Estado_Venta );
+      setEstado_Venta( venta.Estado_Venta ); setFlagFindOne( true ); setFlagFindMany(false);
     }  
   }
 
   function cleanFields() {
     setID_Venta( 0 ); setID_Producto( 0 ); setCantidad( 0 ); setPrecio_Unitario( 0 );
     setValor_Total( 0 ); setFecha_Venta( "" ); setID_Cliente( 0 ); setNom_Cliente( "" );
-    setNom_Vendedor( "" ); setID_Vendedor( 0 ); setEstado_Venta( "" );
+    setNom_Vendedor( "" ); setID_Vendedor( 0 ); setEstado_Venta( "" ); setFlagFindMany(false);
+    setFlagFindOne(false);
   }
 
   const deletVenta = async() => {     
@@ -169,14 +208,13 @@ function SalesPages() {
               <span className="input-group-text" id="addon-wrapping">ID Empleado</span>
               <input type="number" className="form-control" placeholder="Numero Identificacion Empleado" 
                 onChange={e => setID_Vendedor(e.target.value)} />
-            </div>
-            <br />
+            </div> <br />
           </div>
           
           <div className="d-grid gap-2 col-6 mx-auto">
-            <button className="btn btn-success" type="reset">Limpiar Reset</button> <br />
+            <button className="btn btn-success" type="reset">Limpiar Reset</button> 
           </div>
-          <div className="d-grid gap-2 col-6 mx-auto">
+          <div className="d-grid gap-2 col-6 mx-auto mt-2">
             <button className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModalConfirInfo" type="button">
               Agregar Informacion
             </button>
@@ -228,11 +266,12 @@ function SalesPages() {
   
           <ul className="nav nav-tabs">
             <li className="nav-item">
-              <button type="button" className="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalBusqueda">
+              <button type="button" className="btn btn-success btnsGestion" data-bs-toggle="modal"
+                data-bs-target="#modalBusqueda" onClick={ mostrarVentas } >
                 Buscar Venta
               </button>
               <div className="modal fade" id="modalBusqueda" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog modal-lg">
+                <div id="tamModal" className="modal-dialog modal-lg">
                   <div className="modal-content">
                     <div className="modal-header">
                       <h5 className="modal-title" id="exampleModalLabel1">
@@ -240,26 +279,30 @@ function SalesPages() {
                       </h5>
                       <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>                      
-                    <div className="modal-body">
-                      <div className="input-group flex-nowrap">
+                    <div className="modal-body mt-2">
+                      <div className="input-group flex-nowrap tamTextField">
                         <span className="input-group-text" id="labelSearch">ID Venta</span>
-                        <input type="number" className="form-control" placeholder="Identificador de Venta" required />
-                        <button type="button" className="btn btn-dark" >Buscar</button>
+                        <input type="number" className="form-control" placeholder="Identificador de Venta" required 
+                          onChange={ e => setID_Venta(e.target.value) }/>
+                        <button type="button" className="btn btn-dark" onClick={ findSale } >Buscar</button>
                       </div>
-                      <div className="input-group flex-nowrap">
+                      <div className="input-group flex-nowrap tamTextField">
                         <span className="input-group-text" id="labelSearch">Fecha Venta</span>
-                        <input type="date" className="form-control" placeholder="Identificador de Venta" />
-                        <button type="button" className="btn btn-success" >Buscar</button>
+                        <input type="date" className="form-control" placeholder="Identificador de Venta" 
+                          onChange={ e => setFecha_Venta(e.target.value) } />
+                        <button type="button" className="btn btn-success" onClick={ findByFecha } >Buscar</button>
                       </div>
-                      <div className="input-group flex-nowrap">
+                      <div className="input-group flex-nowrap tamTextField">
                         <span className="input-group-text" id="labelSearch">ID Cliente</span>
-                        <input type="number" className="form-control" placeholder="Identificador Cliente" />
-                        <button type="button" className="btn btn-dark" >Buscar</button>
+                        <input type="number" className="form-control" placeholder="Identificador Cliente" 
+                          onChange={ e => setID_Cliente(e.target.value) } />
+                        <button type="button" className="btn btn-dark" onClick={ findByIdCliente } >Buscar</button>
                       </div>
-                      <div className="input-group flex-nowrap">
+                      <div className="input-group flex-nowrap tamTextField">
                         <span className="input-group-text" id="labelSearch">ID Vendedor</span>
-                        <input type="number" className="form-control" placeholder="Identificador Vendedor" />
-                        <button type="button" className="btn btn-success" >Buscar</button>
+                        <input type="number" className="form-control" placeholder="Identificador Vendedor" 
+                          onChange={ e => setID_Vendedor(e.target.value) } />
+                        <button type="button" className="btn btn-success" onClick={ findByIdVend } >Buscar</button>
                       </div>                                              
                     </div> <hr />
                     <div className="container">
@@ -279,12 +322,44 @@ function SalesPages() {
                             <th scope="col">Estado Venta</th>
                           </tr>
                         </thead>
+                        <tbody>              
+                          { flagFindOne == true ? 
+                            <tr className="trList">
+                              <th scope="row">{ ID_Venta }</th>
+                              <td>{ ID_Producto }</td>
+                              <td>{ Cantidad }</td>
+                              <td>{ Precio_Unitario }</td>
+                              <td>{ Valor_Total }</td>
+                              <td>{ Fecha_Venta }</td>
+                              <td>{ ID_Cliente }</td>
+                              <td>{ Nom_Cliente }</td>
+                              <td>{ Nom_Vendedor }</td>
+                              <td>{ ID_Vendedor }</td>
+                              <td>{ Estado_Venta }</td>                                                          
+                            </tr>  :  null }                          
+                          { flagFindMany == true ?
+                            state.map( ventas => 
+                              <tr className="trList">
+                                <th scope="row">{ ventas.ID_Venta }</th>
+                                <td>{ ventas.ID_Producto }</td>
+                                <td>{ ventas.Cantidad }</td>
+                                <td>{ ventas.Precio_Unitario }</td>
+                                <td>{ ventas.Valor_Total }</td>
+                                <td>{ ventas.Fecha_Venta }</td>
+                                <td>{ ventas.ID_Cliente }</td>
+                                <td>{ ventas.Nom_Cliente }</td>
+                                <td>{ ventas.Nom_Vendedor }</td>
+                                <td>{ ventas.ID_Vendedor }</td>
+                                <td>{ ventas.Estado_Venta }</td>
+                              </tr> 
+                            ) : null                      
+                          }                            
+                          </tbody> 
                       </table>
-                    </div>
-                    
+                    </div>                    
                     <div className="modal-footer">
-                      <button type="reset" className="btn btn-success">Limpiar</button> 
-                      <button type="button" className="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>                      
+                      <button type="reset" className="btn btn-success" onClick={ cleanFields }>Limpiar</button> 
+                      <button type="button" className="btn btn-dark" data-bs-dismiss="modal" onClick={ cleanFields }>Cerrar</button>                      
                     </div>
                   </div>
                 </div>
@@ -292,7 +367,7 @@ function SalesPages() {
             </li>
 
             <li className="nav-item">                
-              <button id="btn-listar" type="button" className="btn btn-dark" data-bs-toggle="modal" 
+              <button id="btn-listar" type="button" className="btn btn-dark btnsGestion" data-bs-toggle="modal" 
                 data-bs-target="#modalListar" onClick={ mostrarVentas } >
                 Listar datos
               </button>               
@@ -304,7 +379,7 @@ function SalesPages() {
                       <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>                   
                     <div className="modal-body">
-                      <table id="tableModalList" className="table">
+                      <table id="tableModalList" className="table table-striped">
                         <thead>
                           <tr id="filaNomCol">
                             <th scope="col">ID Venta</th>
@@ -356,7 +431,8 @@ function SalesPages() {
             </li>
 
             <li className="nav-item">
-              <button type="button" className="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalUpdate" required >
+              <button type="button" className="btn btn-success btnsGestion" data-bs-toggle="modal" data-bs-target="#modalUpdate"
+                onClick={ cleanFields } >
                 Actualizar Venta
               </button>
               <div className="modal fade" id="modalUpdate" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
@@ -438,16 +514,14 @@ function SalesPages() {
                     </div>
                     <div className="modal-footer">
                       <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                      <button type="button" className="btn btn-dark" data-bs-dismiss="modal" 
-                        onClick={ updateVenta }>Actualizar</button>
+                      <button type="button" className="btn btn-dark" onClick={ updateVenta }>Actualizar</button>
                       <button type="reset" className="btn btn-success" onClick={ cleanFields }>Limpiar Campos</button>
                     </div>
                   </div>
                 </div>
               </div>
             </li>
-          </ul>
-          <br />
+          </ul> <br /><br />
         </fieldset>
       </form>
 

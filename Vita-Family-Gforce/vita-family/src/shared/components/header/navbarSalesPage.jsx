@@ -10,7 +10,7 @@ function NavbarSales() {
     return (
         <nav id="navColor" className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid"> 
-            <img src="./logo2.png" width='130' />                
+            <img src="./logo2.png" width='120' />                
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" >
                     <span className="navbar-toggler-icon"></span>
@@ -18,42 +18,32 @@ function NavbarSales() {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent" >
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li id="padNav" className="nav-item navMain">
-                            <Link to = "/estadoventas" className="nav-link" aria-current="page" href="#">
+                            <Link to = "/estadoventas" className="nav-link" aria-current="page">
                                 Estado de Ventas
                             </Link>
                         </li>
                         <li className="nav-item navMain">
-                            <Link to = "/gestionventas" className="nav-link" href="#">
-                                Gestion de Ventas
-                            </Link>
+                            <Link to = "/gestionventas" className="nav-link" >Gestion de Ventas</Link>
                         </li>
                         <li className="nav-item navMain">
-                            <Link to = "/productos" className="nav-link" href="#">
-                                Gestion de Productos
-                            </Link>
+                            <Link to = "/productos" className="nav-link" >Gestion de Productos</Link>
                         </li>
                         <li className="nav-item navMain">
-                            <Link to = "/usuarios" className="nav-link" href="#">
-                                Gestion de Usuarios
-                            </Link>
+                            <Link to = "/usuarios" className="nav-link" >Gestion de Usuarios</Link>
                         </li>
                         <li className="nav-item navMain">
-                            <Link to = "/login" className="nav-link" href="#">
-                                Login
-                            </Link>
+                            <Link to = "/login" className="nav-link" >Login</Link>
                         </li>
                     </ul>
                     <form className="d-flex">
                         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button className="btn btn-outline-success" type="submit">
-                            Search
-                        </button>
+                        <button className="btn btn-outline-success" type="submit">Search</button>
                     </form>                    
                 </div>                                                    
                  
                 {isAuthenticated ? 
                     <button type="button" className="rounded-circle" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <img id="circleLog" src={user.picture} alt={user.name} className="rounded-circle" title="User" /> 
+                        <img id="circleLog" src={ user.picture } alt={ user.name } className="rounded-circle" title="User" /> 
                     </button> :
                     <button id="btnSinImagen" type="button" className="rounded-circle" data-bs-toggle="modal" 
                         data-bs-target="#exampleModal">U</button>     
@@ -63,12 +53,12 @@ function NavbarSales() {
                     <div className="modal-dialog modal-sm">
                         <div className="modal-content">                     
                             <div className="modal-header">
-                                <img id="circleLog2" src={user.picture} alt={user.name} 
+                                <img id="circleLog2" src={ user.picture } alt={ user.name } 
                                     className="rounded-circle" title="User" />                                
                             </div>
                             <div className="modal-body">
-                                <h5 className="userEmail">{user.name}</h5>
-                                <h6 className="userEmail">{user.email}</h6>
+                                <h5 className="userEmail">{ user.name }</h5>
+                                <h6 className="userEmail">{ user.email }</h6>
                             </div>
                             <div id="btnLogout" className="modal-footer">                                
                                 <button type="button" className="btn btn-success" 

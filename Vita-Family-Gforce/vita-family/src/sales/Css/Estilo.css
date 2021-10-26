@@ -212,4 +212,13 @@ legend {
     background-color: #1c8f4e;
     color: white;    
 }
-
+.input-group.flex-nowrap.tamTextField {
+    max-width: 50%;
+}
+#tamModal {
+    max-width: 920px;
+}
+.btnsGestion {
+    margin-right: 5px;
+    margin-left: 5px;
+}
