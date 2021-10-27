@@ -74,6 +74,31 @@ function registrarUsuario(req, res){
 
 }
 
+const getOnlyUsuario = async (req, res) => {
+    try {                            
+        Producto.findOne({_id: req.params.id}, (err, usuarioEnBaseDeDatos) => {            
+            if (usuarioEnBaseDeDatos) {    
+                // Si hay registros en la DB            
+                res.status(200).send({ 
+                    usuarioEnBaseDeDatos, 
+                    message: `Busqueda ralizada Correctamente`
+                });                
+            } else {
+                if (res.statusCode == 200) {
+                    res.send({
+                        message: `No hay usuario registradas con el ID ${ req.params.id }`
+                    });
+                }                  
+            }
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: `Error de conexion a la DB ${ err }, No se pudo Buscar usuario ${ error }`
+        });
+    }
+}
+
+
 const updateUsuario = async ( request, response ) => {
 
     const idUsuario = request .params .usuario_id;
@@ -146,6 +171,7 @@ const deleteUsuario = async ( request, response ) => {
 module.exports = {
     getUsuario,
     registrarUsuario,
+    getOnlyUsuario,
     updateUsuario,
     deleteUsuario
 }

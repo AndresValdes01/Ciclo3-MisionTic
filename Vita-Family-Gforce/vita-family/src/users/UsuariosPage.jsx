@@ -19,7 +19,7 @@ import './usuariosStyles.css'
     useEffect( () => {
 
       const getDataAPI = async () => {
-          const response = await fetch( `http://localhost:3001/api/usuarios`, {
+          const response = await fetch( `https://vitafamilyfrontend.herokuapp.com/api/usuarios`, {
               method: 'GET',
               headers: {
                   'Content-Type': 'application/json;charset=utf-8'
@@ -36,7 +36,7 @@ import './usuariosStyles.css'
     }, [ update ] );
 
     const createUsuario = async ( usuario ) => {
-      const response = await fetch( `http://localhost:3001/api/usuarios`, {
+      const response = await fetch( `https://vitafamilyfrontend.herokuapp.com/api/usuarios`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json;charset=utf-8'
@@ -59,7 +59,7 @@ import './usuariosStyles.css'
     }
 
     const deleteUsuario = async ( usuarioId ) => {
-      const response = await fetch( `http://localhost:3001/api/usuarios/${ usuarioId }`, {
+      const response = await fetch( `https://vitafamilyfrontend.herokuapp.com/api/usuarios/${ usuarioId }`, {
           method: 'DELETE',
           headers: {
               'Content-Type': 'application/json;charset=utf-8'
@@ -73,7 +73,7 @@ import './usuariosStyles.css'
   const updateUsuario = async () => {
     const usuarioActualizado = formData;
 
-    const response = await fetch( `http://localhost:3001/api/usuarios/${ formData._id }`, {
+    const response = await fetch( `https://vitafamilyfrontend.herokuapp.com/api/usuarios/${ formData._id }`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
