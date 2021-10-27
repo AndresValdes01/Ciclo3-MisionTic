@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import logo from "./Assets/logo.jpeg";
 import logoVentas from "./Assets/logoVentas.jpg";
+import apiBaseUrl from "../shared/utils/Api";
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import "./Css/Estilo.css";
@@ -23,7 +24,7 @@ function SalesPages() {
   const [Precio_Unitario, setPrecio_Unitario] = useState(0);     
 
   const mostrarVentas = async() => {    
-    await axios.get('http://localhost:3001/api/gestionventas')
+    await axios.get(`${apiBaseUrl}/api/gestionventas`)
       .then(res => {
         const ventas = res.data.ventas;
         setState( ventas );        
@@ -37,7 +38,7 @@ function SalesPages() {
   } 
   
   const findByFecha = async() => {
-    const res = await axios.get('http://localhost:3001/api/gestionventas/Fecha_Venta/' + Fecha_Venta);
+    const res = await axios.get(`${apiBaseUrl}/api/gestionventas/Fecha_Venta/${ Fecha_Venta }`);
     const ventas = res.data.ventas;
     setState(ventas);
     if (ventas.length == 0) {
@@ -49,7 +50,7 @@ function SalesPages() {
   }
 
   const findByIdCliente = async () => {
-    const res = await axios.get('http://localhost:3001/api/gestionventas/ID_Cliente/' + ID_Cliente);
+    const res = await axios.get(`${apiBaseUrl}/api/gestionventas/ID_Cliente/${ ID_Cliente }`);
     const ventas = res.data.ventas;
     setState(ventas);
     if (ventas.length == 0) {
@@ -61,7 +62,7 @@ function SalesPages() {
   }
 
   const findByIdVend = async() => {
-    const res = await axios.get('http://localhost:3001/api/gestionventas/ID_Vendedor/' + ID_Vendedor);
+    const res = await axios.get(`${apiBaseUrl}/api/gestionventas/ID_Vendedor/${ ID_Vendedor }`);
     const ventas = res.data.ventas;
     setState(ventas);
     if (ventas.length == 0) {
@@ -73,7 +74,7 @@ function SalesPages() {
   }
   
   const findSale = async() => {        
-    const res = await axios.get('http://localhost:3001/api/gestionventas/' + ID_Venta);  
+    const res = await axios.get(`${apiBaseUrl}/api/gestionventas/${ ID_Venta }`);  
     const venta = res.data.venta; 
     if (res.data.msg) {
       Swal.fire({ icon: 'error', title: 'Oops...', text: res.data.message });
@@ -110,7 +111,7 @@ function SalesPages() {
       }
     }); 
     const confirmado = async () => {
-      const res = await axios.delete('http://localhost:3001/api/gestionventas/' + ID_Venta);      
+      const res = await axios.delete(`${apiBaseUrl}/api/gestionventas/${ ID_Venta }`);      
       res.data.msg ? Swal.fire({ icon: 'error', title: 'Oops...', text: res.data.message }) : 
         Swal.fire({ icon: 'success', title: res.data.message, showConfirmButton: false, timer: 3000 });  
     }               
@@ -119,7 +120,7 @@ function SalesPages() {
   const updateVenta = async() => {
     const newUpdate = { ID_Venta, ID_Producto, Cantidad, Precio_Unitario, Valor_Total, Fecha_Venta, 
       ID_Cliente, Nom_Cliente, Nom_Vendedor, ID_Vendedor, Estado_Venta }
-    const res = await axios.put('http://localhost:3001/api/gestionventas', newUpdate);
+    const res = await axios.put(`${apiBaseUrl}/api/gestionventas`, newUpdate);
     res.data.msg ? Swal.fire({ icon: 'error', title: 'Oops...', text: res.data.message }) : 
         Swal.fire({ icon: 'success', title: res.data.message, showConfirmButton: false, timer: 3000 });  
     console.log(res.data.message);
@@ -128,7 +129,7 @@ function SalesPages() {
   const registrarVenta = async() => {                                                  
     const NuevaVenta = { ID_Venta, ID_Producto, Cantidad, Precio_Unitario, Valor_Total, Fecha_Venta, 
       ID_Cliente, Nom_Cliente, Nom_Vendedor, ID_Vendedor, Estado_Venta };
-    const res = await axios.post('http://localhost:3001/api/gestionventas', NuevaVenta);    
+    const res = await axios.post(`${apiBaseUrl}/api/gestionventas`, NuevaVenta);    
     res.data.msg ? Swal.fire({ icon: 'error', title: 'Oops...', text: res.data.message }) : 
       Swal.fire({ icon: 'success', title: res.data.message, showConfirmButton: false, timer: 3000 }); 
   } 
@@ -147,7 +148,7 @@ function SalesPages() {
 
       <form>
         <fieldset>
-          <legend>Gestion de Ventas</legend> <hr id="hrmain" />
+          <legend>Gestion de Registro de Ventas</legend> <hr id="hrmain" />
           <div>
             <div className="input-group flex-nowrap">
               <span className="input-group-text" id="addon-wrapping">ID Venta</span>

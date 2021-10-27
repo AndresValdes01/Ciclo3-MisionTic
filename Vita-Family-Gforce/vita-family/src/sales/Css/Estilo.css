@@ -83,6 +83,8 @@ legend {
 }
 .input-group-text {  /* cantidad, id */  
     width: 130px;
+    background-color: rgb(75, 74, 74);
+    color: white;
 }
 #labelSearch {
     width: 150px;
@@ -163,13 +165,12 @@ legend {
     line-height: 20px;
 }
 .labelconf {
-    background-color: #f1faee;
-    padding-bottom: 25px; 
-    color: rgb(1,43,1);
+    background-color: #defdd6;
+    padding-bottom: 25px;     
     width: 50%;
 }
 .labelconf1 {
-    background-color: #7bac69;
+    background-color: #1c8f4e;
     padding-bottom: 25px;  
     color: white;
     width: 50%;
