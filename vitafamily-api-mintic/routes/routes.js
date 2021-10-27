@@ -8,9 +8,6 @@ const ProductosCtrl = require('../controllers/producto.controller');
 
 api.get('/usuarios', UsuarioCtrl.getUsuarios);
 api.post('/usuarios', UsuarioCtrl.registrarUsuario);
-/* api.delete('/usuarios', UsuarioCtrl.eliminarUsuario); */
-api.put('/usuarios', UsuarioCtrl.actualizarUsuario);
-
 
 api.get('/gestionventas', VentasCtrl.getVentas);
 api.get('/gestionventas/:id', VentasCtrl.getOnlySale);
@@ -21,4 +18,9 @@ api.delete('/gestionventas/:id', VentasCtrl.deleteVenta);
 
 api.get('/productos', ProductosCtrl.getProducto);
 api.post('/productos', ProductosCtrl.registrarProducto);
+
+api.get('/productos/:id', ProductosCtrl.getOnlyProduct);
+api.put( '/productos/:producto_id', ProductosCtrl .updateProducto );
+api.delete( '/productos/:producto_id', ProductosCtrl .deleteProducto );
+
 module.exports = api;

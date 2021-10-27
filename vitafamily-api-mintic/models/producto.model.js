@@ -3,9 +3,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ProductoSchema = Schema({
-    id: String,
-    Descripcion: String,
-    preciounidad: Number,
+    descripcion: String,
+    precio: Number,
     cantidad: Number,
     estado: String
 });
