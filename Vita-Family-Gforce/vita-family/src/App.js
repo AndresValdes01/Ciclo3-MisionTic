@@ -1,27 +1,22 @@
 import React from "react";
-import RegisterPage from "./register/RegisterPage";
 import LoginPage from "./login/LoginPage";
-import NavbarSales from "./shared/components/header/navbarSalesPage";
+import Navbar from "./shared/components/header/navbar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import UsuariosPage from "./users/UsuariosPage";
 import ProductPage from "./products/ProductPage";
+import Welcome from "./Welcome/welcome";
 import SalesPages from "./sales/SalesPages";
-//import StatePages from "./states/StatePages";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
+  const { isAuthenticated } = useAuth0();
   return (
     <Router>
-      <NavbarSales/>
+      { isAuthenticated ? <Navbar/> : null }      
       <Route path="/" exact>
-        <LoginPage></LoginPage>
+        { isAuthenticated ? <Welcome /> : <LoginPage></LoginPage> }        
       </Route>
-      <Switch>
-        <Route path="/login" exact>
-          <LoginPage></LoginPage>
-        </Route>
-        <Route path="/registro" exact>
-          <RegisterPage></RegisterPage>
-        </Route>
+      <Switch>              
         <Route path="/usuarios" exact>
           <UsuariosPage></UsuariosPage>
         </Route>
@@ -30,8 +25,7 @@ function App() {
         </Route>
         <Route path="/gestionventas" exact>          
           <SalesPages></SalesPages>
-        </Route>
-        
+        </Route>        
       </Switch>
     </Router>
   );
