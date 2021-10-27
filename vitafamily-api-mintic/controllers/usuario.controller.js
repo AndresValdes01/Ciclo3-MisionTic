@@ -57,7 +57,6 @@ function registrarUsuario(req, res){
             })
         }
     });
-
 }
 function eliminarUsuario(req, res){
     console.log("el usuario ha sido eliminado")
