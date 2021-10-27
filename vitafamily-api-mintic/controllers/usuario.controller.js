@@ -1,7 +1,7 @@
 'use strict'
 const Usuario = require('../models/Usuario.model.js')
 
-function getUsuarios(req, res){
+function getUsuario(req, res){
     Usuario.find({}, (error, usuarios)=>{
         //En caso de que haya habido un error
         if(error) return res.status(500).send({
@@ -19,58 +19,133 @@ function getUsuarios(req, res){
 }
 
 function registrarUsuario(req, res){
-    console.log('POST /api/usuario');
-    console.log(req.body);
+    console.log( req .body );
 
-    //Primero buscamos el usuario en la base de datos
-    Usuario.findOne({codigo: req.body.codigo}, (err, usuarioEnBaseDeDatos)=>{
-        if(!usuarioEnBaseDeDatos){
-            //Si no se encuentra el usuario, se guarda
-            let usuarioTemp = {
-                codigo: req.body.codigo,
-                nombre : req.body.nombre,
-                email: req.body.email,
-                rol: req.body.rol,
-                estado: req.body.estado
-            }
-        
-            let usuarioARegistrar = new Usuario(usuarioTemp);
-        
-            usuarioARegistrar.save((error, usuarioRegistrado)=>{
-                if(!error){
-                    res.status(200).send({
-                        message: 'Usuario registrado',
-                        usuarioRegistrado
-                    })
-                }else{
-                    res.status(500).send({
-                        message: `Error al guardar nuevo usuario en la base de datos: ${err}`
-                    });
-                }
-            })
+    const dataUsuario = new Usuario( req .body );     //  Agrego la data al modelo
+    const usuarioInsertado = dataUsuario .save();     //  Inserto la data a la base de datos
 
-            
-        }else{
-            //Si se encuentra el usuario sacamos un error
-            res.status(202).send({
-                message: `El usuario con codigo ${req.body.codigo} ya se encuentra registrado`
-            })
+    if( ! usuarioInsertado ) return res.json({
+        error: {
+            mensaje: `No se pudo registrar`
         }
     });
-}
-function eliminarUsuario(req, res){
-    console.log("el usuario ha sido eliminado")
-}
-function actualizarUsuario(req, res){
-    Usuario.find({}, (error, usuarios)=>{})
-    console.log("el usuario ha sido actualizado")
+
+    res.json({
+        mensaje: `Se pudo registrar`,
+        usuario: req .body
+    });
+
+
+    //Primero buscamos el producto en la abse de datos
+    // Producto.findOne({id: req.body.id}, (err, productoEnBaseDeDatos)=>{
+    //     if(!productoEnBaseDeDatos){
+    //         //Si no se encuentra el producto, se guarda
+    //         let productoTemp = {
+    //             id: req.body.id,
+    //             Descripcion: req.body.Descripcion,
+    //             preciounidad: req.body.preciounidad,
+    //             cantidad: req.body.cantidad,
+    //             estado: req.body.estado,               
+    //         }
+        
+    //         let productoARegistrar = new Producto(productoTemp);
+        
+    //         productoARegistrar.save((error, productoRegistrado)=>{
+    //             if(!error){
+    //                 res.status(200).send({
+    //                     message: 'Producto registrado',
+    //                     productoRegistrado
+    //                 })
+    //             }else{
+    //                 res.status(500).send({
+    //                     message: `Error al guardar nuevo producto en la base de datos: ${err}`
+    //                 });
+    //             }
+    //         })
+
+            
+    //     }else{
+    //         //Si se encuentra el producto sacamos un error
+    //         res.status(202).send({
+    //             message: `El producto con ID ${req.body.id} ya se encuentra registrado`
+    //         })
+    //     }
+    // });
+
 }
 
+const updateUsuario = async ( request, response ) => {
+
+    const idUsuario = request .params .usuario_id;
+    const usuarioActualizar = request .body;
+
+    try {
+        // Consulta si el usuario existe
+        const usuarioEncontrado = await Usuario .find({ _id: idUsuario });
+
+        // Verifico si NO ENCONTRO el producto
+        if( ! usuarioEncontrado ) return response.json({
+            error: {
+                mensaje: `El usuario no se encuentra registrado`
+            }
+        });
+
+        // Consulta para actualizar usuario
+        const usuarioActualizado = await Usuario .findByIdAndUpdate({ _id: idUsuario }, usuarioActualizar, { new: true } );
+        usuarioActualizado .save();            // Inserto cambios a la base de datos
+
+        response .json({
+            mensaje: `Usuario actualizado`,
+            usuario: usuarioActualizado
+        });
+
+    } catch (error) {
+        console.log( `Se produjo un error` );
+        response .json({
+            error: {
+                mensaje: `Se produjo un error`
+            }
+        });
+    }
+
+}
+
+const deleteUsuario = async ( request, response ) => {
+    const idUsuario = request .params .usuario_id;
+
+    try {
+
+        // Consulta si el usuario existe
+        const usuarioEncontrado = await Usuario .findById( idUsuario );
+
+        // Verifico si NO ENCONTRO el usuario
+        if( ! usuarioEncontrado ) return response.json({
+            error: {
+                mensaje: `El usuario no se encuentra registrado`
+            }
+        });
+
+        const usuarioEliminado = await Usuario .findByIdAndRemove( idUsuario );
+        usuarioEliminado .save();              // Eliminar de la base de datos
+
+        response .json({
+            mensaje: `Elimino registro`
+        });
+
+    } catch (error) {
+        console.log( `Se produjo un error` );
+        response .json({
+            error: {
+                mensaje: `Se produjo un error`
+            }
+        });
+    }
+
+}
 
 module.exports = {
-    getUsuarios,
+    getUsuario,
     registrarUsuario,
-    eliminarUsuario,
-    actualizarUsuario
-
+    updateUsuario,
+    deleteUsuario
 }

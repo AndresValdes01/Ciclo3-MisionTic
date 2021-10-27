@@ -1,79 +1,194 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import logo from './logo.jpeg'
 import './usuariosStyles.css'
-import axios from 'axios';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faTrash, faPencilAlt} from '@fortawesome/free-solid-svg-icons'
 
-  class UsuariosPage extends React.Component{
-    state = {
-      usuarios : []
+  const UsuariosPage =() => {
+    const [ formData, setFormData ] = useState({
+      codigo: '',
+      nombre: '',
+      email: '',
+      rol: '',
+      estado: '',
+
+    });
+    const [ usuarios, setUsuarios ] = useState([]);
+    const [ update, setUpdate ] = useState( false );
+
+    const { codigo, nombre,email,rol, estado } = formData;
+
+    useEffect( () => {
+
+      const getDataAPI = async () => {
+          const response = await fetch( `http://localhost:3001/api/usuarios`, {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json;charset=utf-8'
+              }
+          });
+          const data = await response.json();
+
+            console.log( data );
+            setUsuarios( data.usuarios );         // Establece nuevo estado de usuarios
+        }
+
+        getDataAPI();
+
+    }, [ update ] );
+
+    const createUsuario = async ( usuario ) => {
+      const response = await fetch( `http://localhost:3001/api/usuarios`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify( usuario )
+      });
+
+      const data = await response.json();
+
+      console.log( data );
+
+      setFormData({
+          codigo: '',
+          nombre: '',
+          email: '',
+          rol: '',
+          estado: ''
+      });
+      setUpdate( false );
     }
-  
-    componentDidMount(){
-      axios.get('http://localhost:3001/api/usuarios')
-      .then(res=>{
-        const usuarios = res.data.usuarios;
-        this.setState({usuarios});
-      })
-    }
-    registrarUsuario(event){
 
+    const deleteUsuario = async ( usuarioId ) => {
+      const response = await fetch( `http://localhost:3001/api/usuarios/${ usuarioId }`, {
+          method: 'DELETE',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          }
+      });
 
-        //consumir post con axios
-        axios.post('http://localhost:3001/api/usuarios',{
-          codigo: event.target.codigo.value,  
-          nombre: event.target.nombre.value,          
-          email: event.target.email.value,
-          rol: event.target.rol.value,
-          estado : event.target.estado.value
-        }).then(res =>{ 
-           alert(res.data.message);
-          console.log(res.data);
-        })
-    
+      const data = await response.json();
+
+      console.log( data );
+  }
+  const updateUsuario = async () => {
+    const usuarioActualizado = formData;
+
+    const response = await fetch( `http://localhost:3001/api/usuarios/${ formData._id }`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify( usuarioActualizado )
+    });
+    const data = await response.json();
+
+        console.log( data );
         
+        setFormData({
+            codigo: '',
+            nombre: '',
+            email: '',
+            rol: '',
+            estado: ''
+        });
+
+        setUpdate( false );
+    }
+    const handleUpdate = ( usuarioId ) => {
+
+      const index = usuarios.findIndex( index => index._id === usuarioId );
+      setUpdate( true );
+      setFormData( usuarios[ index ] );
+  }
+
+  // Maneja eliminar producto
+  const handleDelete = ( usuarioId ) => {
+
+      // Elimina la data a la BD haciendo peticion al API
+      deleteUsuario( usuarioId );
+
+      //  Elimina el registro del estado del componente
+      setUsuarios( usuarios.filter( usuario => usuario._id !== usuarioId ) );
+  }
+
+  // Maneja el envio de la data del formulario
+  const handleSubmit = ( event ) => {
+      event.preventDefault();     // Evita la redireccion
+
+      if( update ) {
+          updateUsuario();
       }
-/* 
-      actualizarUsuario(){
-        axios.put('http://localhost:3001/api/usuarios', {
-          
-        })
+      else {
+
+          // Agrega la data a la BD haciendo peticion al API
+          createUsuario( formData );
+
+          //  Agrega el nuevo registro al estado del componente
+          setUsuarios([
+              formData,
+              ...usuarios
+          ]);
       }
-      eliminarUsuario(){
-        axios.delete('http://localhost:3001/api/usuarios')
-      }
-     */
-      render(){
-        return (
-          <div className="App">           
-    <section className ="todo">
-        <div>
+
+  }   
+  const handleCancel = ( event ) => {
+    event.preventDefault();     // Evita la redireccion
+
+    setFormData({
+        codigo: '',
+        nombre: '',
+        email: '',
+        rol: '',
+        estado: ''
+    });
+
+    setUpdate( false );
+}
+
+// Maneja los cambios en la data de los campos y establece el estado del componente
+const handleChange = ( event ) => {
+
+    // Funcion del State con el que cambiamos el estado del componente
+    setFormData({
+        ...formData,
+        [ event.target.name ]: event.target.value
+    })
+}
+    return (
+      <div className="App">           
+          <div className ="todo">
+  
         <img src={logo} className= "imagen"/>
         <h1 className ="h1-users">Crear usuario</h1>
-        <form  onSubmit={this.registrarUsuario} className = "fusers">
-            <input className="registro" type="text" placeholder="ID" name = "codigo" value ={this.state.usuarios.length+1}/>
-            <input className="registro" type="text" placeholder="Nombre" name = "nombre"/>
-            <input className="registro" type="email" placeholder="email" name="email"/><br/>
-            <select name="rol" className="selectorRol" name="rol">
+        <form  onSubmit={handleSubmit} className = "fusers">
+            <input className="registro" type="text" placeholder="codigo" name = "codigo" value={codigo} onChange={handleChange}/>
+            <input className="registro" type="text" placeholder="Nombre" name = "nombre" value={nombre} onChange={handleChange}/>
+            <input className="registro" type="email" placeholder="email" name="email"value={email} onChange={handleChange}/><br/>
+            <select name="rol" className="selectorRol" name="rol" value={rol} onChange={handleChange}>
+            <option selected hidden>Seleccione una opcion</option>
                 <option >Vendedor</option>
                 <option >Administrador</option>
             </select>
-            <select name="rol" className="selectorRol" name="estado">
+            <select name="rol" className="selectorRol" name="estado" value={estado} onChange={handleChange}>
+                <option hidden>Selecione una opción</option>
                 <option >Autorizado</option>
                 <option >No Autorizado</option>
             </select><br/>
-            <button className="bt-users" type="submit" > Crear usuario</button>
-            <button className = "bt-users" type="reset"> Cancelar</button>
+            <button className="bt-users" type="submit" >{`${update ?'Actualizar usuario': 'crear usuario'}`}</button>
+            <button className = "bt-users" onClick ={handleCancel}> Cancelar</button>
+            
         </form>
         </div>
         <div className="conte">
-        <form className = "fusers">
-        <input type="search" id="Bucador" placeholder="Buscar usuario"/>
-        <button>Buscar</button>
-        </form>        
-        
-        <table className="tabla">
+          {usuarios.length <= 0 
+            ?<p>No hay usuarios registrados</p>
+            :
+          <form className = "fusers">
+          <input type="search" id="Bucador" placeholder="Buscar usuario"/>
+          <button>Buscar</button>
+                  
+          
+          <table className="tabla">
                 <tr class="fpusers">
                   <th className ="th-users">Usuario ID</th>
                   <th className ="th-users">Nombre</th>
@@ -82,31 +197,22 @@ import {faTrash, faPencilAlt} from '@fortawesome/free-solid-svg-icons'
                   <th className ="th-users">Estado</th>
                   <th className ="th-users">Acción</th>
                 </tr>
-            {this.state.usuarios.map(
-                  usuario =>
-
-                <tr class="filausers">
-                      <td className="td-users">{usuario.codigo}</td>
+                {   usuarios.map( ( usuario, index ) => (
+                                        <tr key={ index } className="filausers">
+                  <td className="td-users">{usuario.codigo}</td>
                       <td className="td-users">{usuario.nombre}</td>
                       <td className="td-users">{usuario.email}</td>
                       <td className="td-users">{usuario.rol}</td>
                       <td className="td-users">{usuario.estado}</td>
-                      <td className ="td-users"> 
-                      <button onClick ={this.actualizarUsuario} className ="botn" title ="eliminar" value ="eliminar" ><FontAwesomeIcon className ="btn-delete" icon={faTrash}/>
-                      </button> <button onClick ={this.eliminarUsuario} title ="actualizar" value ="actualizar" ><FontAwesomeIcon className ="btn-update" icon={faPencilAlt}/></button></td>
-                </tr>
-                    
-                  )}
-                  </table>
-
-        
+                      <td className ="td-users"><button type="button" onClick ={()=>handleDelete(usuario._id)}> Eliminar</button><button type="button" onClick={ ()=> handleUpdate(usuario._id)}>Actualizar</button>
+                      </td>
+                </tr>)
+                )}   
+                </table>
+                </form>
+          }
         </div>
+      </div>
 
-    </section>
-    </div>
-         
-    );
-  }
-}
-
+    )}
 export default UsuariosPage;

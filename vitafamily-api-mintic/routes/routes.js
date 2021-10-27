@@ -6,8 +6,11 @@ const UsuarioCtrl = require('../controllers/usuario.controller');
 const VentasCtrl = require('../controllers/ventas.controller');
 const ProductosCtrl = require('../controllers/producto.controller');
 
-api.get('/usuarios', UsuarioCtrl.getUsuarios);
+api.get('/usuarios', UsuarioCtrl.getUsuario);
 api.post('/usuarios', UsuarioCtrl.registrarUsuario);
+
+api .put( '/usuarios/:usuario_id', UsuarioCtrl .updateUsuario );
+api .delete( '/usuarios/:usuario_id', UsuarioCtrl .deleteUsuario );
 
 api.get('/gestionventas', VentasCtrl.getVentas);
 api.get('/gestionventas/:id', VentasCtrl.getOnlySale);
