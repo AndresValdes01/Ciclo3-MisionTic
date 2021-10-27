@@ -45,3 +45,53 @@ h1 {text-align: center;
 	color: white;
 }
 
+
+/** Hojas de estilo del Formulario */
+
+.form-fields {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-field {
+    border: 1px solid orange;
+    display: flex;
+    flex-direction: row;
+    margin: .4rem .2rem;
+}
+
+.form-field label {
+    background: transparent;
+    text-align: normal;
+    width: 7rem;
+}
+
+.form-field input,
+.form-field select {
+    width: 9rem;
+}
+
+.form-buttons {
+    margin: 1rem 0;
+}
+
+.form-buttons .btn {
+    border: none;
+    margin: 0 .4rem;
+    padding: 0.3rem .8rem;
+}
+
+.form-buttons .btn-submit {
+    background: #008000;
+    border: 1px solid transparent;
+    color: white;
+}
+
+.form-buttons .btn-cancel {
+    background: white;
+    border: 1px solid #008000;
+    color: #008000;
+}
