@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import UsuariosPage from "./users/UsuariosPage";
 import ProductPage from "./products/ProductPage";
 import SalesPages from "./sales/SalesPages";
-import StatePages from "./states/StatePages";
+//import StatePages from "./states/StatePages";
 
 function App() {
   return (
@@ -31,9 +31,7 @@ function App() {
         <Route path="/gestionventas" exact>          
           <SalesPages></SalesPages>
         </Route>
-        <Route path="/estadoventas" exact>
-          <StatePages></StatePages>
-        </Route>
+        
       </Switch>
     </Router>
   );
