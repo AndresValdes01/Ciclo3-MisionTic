@@ -11,7 +11,7 @@ function LoginPage(){
                 <img className="vflogo" src={logo} alt="VitaFamily"/>
                 <div className="google-btn">
                     <div className="google-icon-wrapper">
-                        <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+                        <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt=""/>
                     </div>
                     <a href="#" className="btn-text" onClick={() => loginWithRedirect()}><b>Iniciar sesión con Google</b></a>
                 </div>

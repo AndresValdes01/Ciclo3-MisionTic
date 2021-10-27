@@ -10,18 +10,13 @@ function NavbarSales() {
     return (
         <nav id="navColor" className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid"> 
-            <img src="./logo2.png" width='120' />                
+                <Link to = "/" className="nav-link"><img src="./logo2.png" width='60' alt="VitaFamily"/> </Link>                           
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" >
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent" >
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li id="padNav" className="nav-item navMain">
-                            <Link to = "/estadoventas" className="nav-link" aria-current="page">
-                                Estado de Ventas
-                            </Link>
-                        </li>
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">                        
                         <li className="nav-item navMain">
                             <Link to = "/gestionventas" className="nav-link" >Gestion de Ventas</Link>
                         </li>
@@ -30,10 +25,7 @@ function NavbarSales() {
                         </li>
                         <li className="nav-item navMain">
                             <Link to = "/usuarios" className="nav-link" >Gestion de Usuarios</Link>
-                        </li>
-                        <li className="nav-item navMain">
-                            <Link to = "/login" className="nav-link" >Login</Link>
-                        </li>
+                        </li>                                           
                     </ul>
                     <form className="d-flex">
                         <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
