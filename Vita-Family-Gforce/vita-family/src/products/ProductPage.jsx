@@ -21,7 +21,7 @@ const ProductPage = () => {
     useEffect( () => {
 
         const getDataAPI = async () => {
-            const response = await fetch( `http://localhost:5000/api/productos`, {
+            const response = await fetch( `http://localhost:3001/api/productos`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
@@ -39,7 +39,7 @@ const ProductPage = () => {
 
     // Peticion API para agregar un producto
     const createProduct = async ( producto ) => {
-        const response = await fetch( `http://localhost:5000/api/productos`, {
+        const response = await fetch( `http://localhost:3001/api/productos`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -63,7 +63,7 @@ const ProductPage = () => {
 
     // Peticion API para eliminar un producto
     const deleteProduct = async ( productId ) => {
-        const response = await fetch( `http://localhost:5000/api/productos/${ productId }`, {
+        const response = await fetch( `http://localhost:3001/api/productos/${ productId }`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -79,7 +79,7 @@ const ProductPage = () => {
     const updateProduct = async () => {
         const productoActualizado = formData;
 
-        const response = await fetch( `http://localhost:5000/api/productos/${ formData._id }`, {
+        const response = await fetch( `http://localhost:3001/api/productos/${ formData._id }`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
